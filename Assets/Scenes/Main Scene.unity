@@ -155,6 +155,13 @@ MonoBehaviour:
   parent: {fileID: 246993390}
   block: {fileID: 2735594788158689385, guid: 0738391c192eba84381b2ba0c454429e, type: 3}
   mysteryWord: 
+  blocks: []
+  index: 0
+  guess: 
+  symbols: 
+  correct: {r: 0.20583129, g: 1, b: 0, a: 1}
+  incorrect: {r: 0.735849, g: 0.6976682, b: 0.6976682, a: 1}
+  exists: {r: 1, g: 0.95985556, b: 0, a: 1}
 --- !u!4 &156608070
 Transform:
   m_ObjectHideFlags: 0
