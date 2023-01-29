@@ -8,14 +8,18 @@ public class GameManager : MonoBehaviour
     public Transform parent;
     public GameObject block;
     public string mysteryWord;
+    public List<GameObject> blocks = new List<GameObject>();
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         CreateMysteryWord();
         for(int i = 0; i < mysteryWord.Length; i++)
         {
-            Instantiate(block, transform.position, Quaternion.identity).transform.SetParent(parent);
+            GameObject instance = Instantiate(block, transform.position, Quaternion.identity);
+            instance.transform.SetParent(parent);
+            instance.transform.localScale = Vector3.one;
+            blocks.Add(instance);
         }
     }
 
@@ -35,7 +39,8 @@ public class GameManager : MonoBehaviour
 
     public void CreateMysteryWord()
     {
-        string[] lines = System.IO.File.ReadAllLines(@"C:\Users\lijet\OneDrive\Documents\GitHub\Squirtle\Assets\Pokemon Names.txt");
+        string[] lines = File.ReadAllLines(@"C:\Users\lijet\OneDrive\Documents\GitHub\Squirtle\Assets\Pokemon Names.txt");
+        //string[] lines = System.IO.File.ReadAllLines(@"D:\Users\Game Dev Storage\Game Dev Games\Squirtle\Assets\Pokemon Names.txt");
 
         mysteryWord = lines[Random.Range(0, lines.Length)];
 
