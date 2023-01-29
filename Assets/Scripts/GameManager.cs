@@ -6,11 +6,12 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public Transform parent;
+    public Transform[] parent;
     public GameObject block;
     public string mysteryWord;
-    public List<GameObject> blocks = new List<GameObject>();
+    public List<List<GameObject>> blocks = new List<List<GameObject>>();
     public int index = 0;
+    public int blocksIndex = 0;
     public string guess = "";
     public string symbols;
     public Color correct, incorrect, exists;
@@ -19,12 +20,16 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         CreateMysteryWord();
-        for(int i = 0; i < mysteryWord.Length; i++)
+        for (int i = 0; i < parent.Length; i++)
         {
-            GameObject instance = Instantiate(block, transform.position, Quaternion.identity);
-            instance.transform.SetParent(parent);
-            instance.transform.localScale = Vector3.one;
-            blocks.Add(instance);
+            blocks.Add(new List<GameObject>());
+            for (int j = 0; j < mysteryWord.Length; j++)
+            {
+                GameObject instance = Instantiate(block, transform.position, Quaternion.identity);
+                instance.transform.SetParent(parent[i]);
+                instance.transform.localScale = Vector3.one;
+                blocks[i].Add(instance);
+            }
         }
     }
 
@@ -54,6 +59,10 @@ public class GameManager : MonoBehaviour
             {
                 CheckWord();
                 HighLightBlock();
+                blocksIndex++;
+                index = 0;
+                guess = "";
+                return;
             }
 
             if (string.IsNullOrEmpty(inputString))
@@ -69,18 +78,18 @@ public class GameManager : MonoBehaviour
                 }
 
                 index--;
-                blocks[index].GetComponentInChildren<Text>().text = "";
+                blocks[blocksIndex][index].GetComponentInChildren<Text>().text = "";
 
                 guess = guess.Substring(0, guess.Length - 1);
                 return;
             }
 
-            if (index >= blocks.Count)
+            if (index >= blocks[blocksIndex].Count)
             {
                 return;
             }
 
-            blocks[index].GetComponentInChildren<Text>().text = inputString.ToUpper();
+            blocks[blocksIndex][index].GetComponentInChildren<Text>().text = inputString.ToUpper();
             index++;
 
             guess += inputString.ToUpper();
@@ -113,9 +122,9 @@ public class GameManager : MonoBehaviour
 
     public void HighLightBlock()
     {
-        for(int i = 0; i < blocks.Count; i++)
+        for(int i = 0; i < blocks[blocksIndex].Count; i++)
         {
-            Image backGround = blocks[i].GetComponentInChildren<Image>();
+            Image backGround = blocks[blocksIndex][i].GetComponentInChildren<Image>();
 
             if(symbols.Substring(i,1) == "+")
             {
