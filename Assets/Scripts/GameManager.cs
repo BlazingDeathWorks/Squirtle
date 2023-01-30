@@ -45,8 +45,8 @@ public class GameManager : MonoBehaviour
 
     public void CreateMysteryWord()
     {
-        string[] lines = File.ReadAllLines(@"C:\Users\lijet\OneDrive\Documents\GitHub\Squirtle\Assets\Pokemon Names.txt");
-        //string[] lines = System.IO.File.ReadAllLines(@"D:\Users\Game Dev Storage\Game Dev Games\Squirtle\Assets\Pokemon Names.txt");
+        //string[] lines = File.ReadAllLines(@"C:\Users\lijet\OneDrive\Documents\GitHub\Squirtle\Assets\Pokemon Names.txt");
+        string[] lines = System.IO.File.ReadAllLines(@"D:\Users\Game Dev Storage\Game Dev Games\Squirtle\Assets\Pokemon Names.txt");
 
         mysteryWord = lines[Random.Range(0, lines.Length)].ToUpper();
 
