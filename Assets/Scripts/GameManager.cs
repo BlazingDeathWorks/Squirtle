@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class GameManager : MonoBehaviour
     public string guess = "";
     public string symbols;
     public Color correct, incorrect, exists;
+    public GameObject EndOverlay;
+    public GameObject TryAgainScreen;
 
     // Start is called before the first frame update
     void Awake()
@@ -37,6 +40,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         InputSystem();
+        NoTriesLeft();
     }
 
     public void CreateMysteryWord()
@@ -55,10 +59,17 @@ public class GameManager : MonoBehaviour
         {
             string inputString = (Input.inputString);
 
-            if(inputString == "\n"|| inputString == "\r")
+
+            if ((inputString == "\n" || inputString == "\r"))
             {
+                if (guess.Length != mysteryWord.Length)
+                {
+                    return;
+                }
+
                 CheckWord();
                 HighLightBlock();
+                AllCorrect();
                 blocksIndex++;
                 index = 0;
                 guess = "";
@@ -144,5 +155,32 @@ public class GameManager : MonoBehaviour
                 backGround.color = incorrect;
             }
         }
+    }
+
+    public void PlayAgainButton()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+
+    public void AllCorrect()
+    {
+        if(guess == mysteryWord)
+        {
+            EndOverlay.SetActive(true);
+        }
+    }
+
+    public void NoTriesLeft()
+    {
+        if(blocksIndex > 4 && guess != mysteryWord)
+        {
+            TryAgainScreen.SetActive(true);
+        }
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 }
